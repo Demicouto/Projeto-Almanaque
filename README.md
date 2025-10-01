@@ -25,7 +25,7 @@ Gerenciar livros, usuários e empréstimos de uma biblioteca via **linha de coma
 ```bash
 sistema-biblioteca-cli/
 ├── lib/
-│   └── postgresql-42.7.4.jar   # driver JDBC
+│   └── Conexão com o banco
 ├── src/
 │   ├── model/
 │   │   └── Livro.java
@@ -40,23 +40,3 @@ sistema-biblioteca-cli/
 │   └── Main.java
 └── README.md
 ```
----
-
-## ⚙️ Configuração do Banco
-
-Crie o banco de dados no PostgreSQL:
-
-```sql
-CREATE DATABASE biblioteca;
-
-\c biblioteca;
-
-CREATE TABLE livros (
-    id SERIAL PRIMARY KEY,
-    titulo VARCHAR(255) NOT NULL,
-    autor VARCHAR(255) NOT NULL,
-    ano INT NOT NULL,
-    isbn VARCHAR(20) UNIQUE NOT NULL,
-    quantidade_total INT NOT NULL,
-    quantidade_disponivel INT NOT NULL
-);
