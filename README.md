@@ -1,5 +1,5 @@
 
-# 📚 Sistema de Biblioteca (CLI + PostgreSQL)
+# 📚 Sistema de Biblioteca
 
 Um sistema de gerenciamento de biblioteca desenvolvido em **Java (CLI)** com persistência de dados no **PostgreSQL**.  
 O projeto segue boas práticas de **arquitetura em camadas** (Model, Repository, Service e CLI).
@@ -29,6 +29,8 @@ sistema-biblioteca-cli/
 ├── src/
 │   ├── model/
 │   │   └── Livro.java
+│   │   └── Usuario.java
+│   │   └── Emprestimo.java
 │   ├── repository/
 │   │   └── LivroRepository.java
 │   ├── service/
