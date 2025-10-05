@@ -22,13 +22,13 @@ class Bibliotecario {
 }
 
 class Emprestimo {
-    - dataEmpretimo
+    - dataEmprestimo
     - dataDevolucao
     + calcularAtraso()
 }
 
-Usuario --|> Emprestimo
-Emprestimo --|> Livro
-Bibliotecario --|> Livro
+Usuario "1" --|> "0..*" Emprestimo : realiza > 
+Emprestimo "1" --|> "1" Livro : refere-se >
+Bibliotecario "1" --|> "0..*" Livro : Gerencia >
 
 @enduml
