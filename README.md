@@ -23,7 +23,7 @@ Gerenciar livros, usuários e empréstimos de uma biblioteca via **linha de coma
 ## 📂 Estrutura do Projeto
 
 ```bash
-sistema-biblioteca-cli/
+Projeto-Almanaque/
 ├── lib/
 │   └── Conexão com o banco
 ├── src/
