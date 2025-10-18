@@ -1,0 +1,33 @@
+@startuml Diagrama de caso de uso
+
+actor "Usuario/Leitor" as U
+actor "Bibliotecário" as B
+
+rectangle "Sistema da biblioteca" {
+    usecase (Pesquisar livro) as UC_PESQUISAR_LIVRO
+    usecase (Cadastrar usuario) as UC_CADASTRAR_USUARIO
+    usecase (Devolver livro) as UC_DEVOLVER_LIVRO
+
+    usecase (Emprestar livro) as UC_EMPRESTAR_LIVRO
+    usecase (Cadastrar livro) as UC_CADASTRAR_LIVRO
+
+    usecase (Persistir dados no banco) as UC_GUARDAR_NO_BANCO
+    usecase (Sistema de multa) as US_MULTAR_ATRASO
+
+    UC_CADASTRAR_USUARIO ..> UC_GUARDAR_NO_BANCO : <<include>>
+    UC_DEVOLVER_LIVRO ..> UC_GUARDAR_NO_BANCO : <<include>>
+    UC_EMPRESTAR_LIVRO ..> UC_GUARDAR_NO_BANCO : <<include>>
+    UC_CADASTRAR_LIVRO ..> UC_GUARDAR_NO_BANCO : <<include>>
+
+    UC_DEVOLVER_LIVRO ..> US_MULTAR_ATRASO : <<include>>
+
+}
+
+U -- UC_CADASTRAR_USUARIO
+U -- UC_PESQUISAR_LIVRO
+U -- UC_DEVOLVER_LIVRO
+
+B -- UC_EMPRESTAR_LIVRO
+B -- UC_CADASTRAR_LIVRO
+
+@enduml

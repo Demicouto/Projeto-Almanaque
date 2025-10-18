@@ -1,0 +1,34 @@
+@startuml Diagrama de classe
+
+class Livro {
+  - titulo : String
+  - autor : String
+  - resumo : String
+  - qntDisponivel : int
+  + emprestar()
+  + devolver()
+}
+
+class Usuario {
+    - nome : String
+    - idade : int 
+    + meusLivros()
+    + devolverLivro(livro: Livro)
+}
+
+class Bibliotecario {
+    + solicitacoesEmprestimo();
+    + emprestar(livro: Livro)
+}
+
+class Emprestimo {
+    - dataEmprestimo
+    - dataDevolucao
+    + calcularAtraso()
+}
+
+Usuario "1" --|> "0..*" Emprestimo : realiza > 
+Emprestimo "1" --|> "1" Livro : refere-se >
+Bibliotecario "1" --|> "0..*" Livro : Gerencia >
+
+@enduml
