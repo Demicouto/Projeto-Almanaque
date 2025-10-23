@@ -7,6 +7,7 @@ public class Usuario {
     private String nome;
     private String email;
     private TipoUsuario tipo;
+    private String senha;
 
     public Usuario() {
     }
@@ -49,9 +50,23 @@ public class Usuario {
         this.tipo = tipo;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
     @Override
     public String toString() {
-        return "Usuario ID: " + id + " | Nome: '" + nome + "' | Email: '" + email + "' | Tipo: " + tipo;
+        return "Usuario{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                ", tipo=" + tipo +
+                ", senha='" + senha + '\'' +
+                '}';
     }
 }
 
