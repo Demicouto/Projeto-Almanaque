@@ -9,7 +9,7 @@ public class Usuario {
     private TipoUsuario tipo;
     private String senha;
 
-    public Usuario() {
+    public Usuario(int i, String rony, String mail, TipoUsuario admin, String number) {
     }
 
     public Usuario(String email, String nome, TipoUsuario tipo) {

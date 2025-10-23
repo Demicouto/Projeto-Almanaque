@@ -10,6 +10,7 @@ public class MenusView {
     private Scanner sc;
 
     public MenusView(Usuario usuarioLogado){
+        this.sc = new Scanner(System.in);
         this.usuarioLogado  = usuarioLogado;
     }
 
@@ -81,10 +82,7 @@ public class MenusView {
             String email = sc.nextLine();
             System.out.print("[Senha]:");
             String senha = sc.nextLine();
-            sc.nextLine(); //Limpa scanner
 
-            //Pode ter uma validação se relmente existe o usuário no banco ou n
-            //Pode ser aqui ou no controller se for no controller vamos retornar um usuário(Prototipo)
             //tratar os dados
 
             String[] usuarioNaoValidado = {email, senha};
@@ -93,7 +91,7 @@ public class MenusView {
         }while (opc!=0);
     }
 
-    public void MenuCriarUsuario(){
+    public String[] MenuCriarUsuario(){
         int opc =-1;
 
         do{
@@ -102,7 +100,6 @@ public class MenusView {
             System.out.println("[2]: Email");
             System.out.println("[3]: Senha");
             System.out.println("=======================");
-            System.out.println("[0]: Cancelar a criação");
             System.out.println();
 
             System.out.print("[Nome]:");
@@ -111,12 +108,18 @@ public class MenusView {
             String email = sc.nextLine();
             System.out.print("[Senha]:");
             String senha = sc.nextLine();
-            sc.nextLine(); //Limpa scanner
+            System.out.print("Deseja salvar o usuario: "+nome+" (s/n): ");
+            opc = sc.nextLine().toLowerCase() == "s"? -1:0;
+
+            if(opc == -1){
+                String[] usuarioNaoValidado = {nome, email, senha};
+                return usuarioNaoValidado;
+            }
 
             //Validar se o usuário ja existe no banco;
             //Validar os dados e tratar
-
-
         }while (opc!=0);
     }
+
+
 }
