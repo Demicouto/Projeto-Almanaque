@@ -1,10 +1,10 @@
 package org.almanaque.model;
 
 public class Livro {
+    private String isbn;
     private String titulo;
     private String autor;
     private int ano;
-    private String isbn;
     private int quantidadeTotal;
     private int quantidadeDisponivel;
     private String categoria;
