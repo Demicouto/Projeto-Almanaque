@@ -1,7 +1,6 @@
 package org.almanaque.model;
 
 public class Livro {
-    private int id;
     private String titulo;
     private String autor;
     private int ano;
@@ -34,10 +33,6 @@ public class Livro {
         this.categoria = categoria;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
@@ -66,10 +61,6 @@ public class Livro {
         return categoria;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public String getIsbn() {
         return isbn;
     }
@@ -88,6 +79,6 @@ public class Livro {
 
     @Override
     public String toString() {
-        return "Livro ID: " + id + " | Título: '" + titulo + "' | Autor: '" + autor + "' | Disponíveis: " + quantidadeDisponivel;
+        return " | Título: '" + titulo + "' | Autor: '" + autor + "' | Disponíveis: " + quantidadeDisponivel;
     }
 }
