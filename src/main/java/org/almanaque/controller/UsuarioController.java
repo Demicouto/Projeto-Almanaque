@@ -7,18 +7,26 @@ import org.almanaque.view.MenusView;
 public class UsuarioController {
     private MenusView menus;
 
-    public UsuarioController(){
-        menus = new MenusView(new Usuario(1,"Rony","rony.lima@upe.br", TipoUsuario.ADMIN,"123"));
+    public UsuarioController() {
+
+        menus = new MenusView(new Usuario(1, "Rony", "rony.lima@upe.br", TipoUsuario.ADMIN, "123"));
+    } 
+
+    private boolean validarEmail(String email) {
+        return email.contains("@");
     }
 
-    public void cadastrarUsuario(){
-        String[] dados = menus.MenuCriarUsuario();
+    public void cadastrarUsuario() {
+        String[] dados = menus.MenuCriarUsuario(); // Retorna [nome, email, senha] ou null
 
-        //Validar se o usuário já existe
+        String nome = dados[0];
+        String email = dados[1];
+        String senha = dados[2];
 
-        //Validar se o email é válido
-        if(dados[1].equals(dados[1].toLowerCase()) && dados[1].contains("@gmail.com")){
-            System.out.println("Email válido !");
+        System.out.println(email + "\n" + nome + "\n" + senha + "\n");
+        if (!validarEmail(email)) {
+            System.out.println("Email inválido! O email deve conter '@'.");
+            return;
         }
     }
 }

@@ -25,12 +25,15 @@ public class MenusView {
                     System.out.println("[1]-Mostrar livros recomendados");
                     System.out.println("[2]-Pesquisar Livros");
                     System.out.println("[3]-Multas/Atraso");
+                    System.out.println("[4]-Devolver Livro");
                     break;
 
                 case TipoUsuario.ADMIN:
                     System.out.println("[1]-Mostrar todos os livros");
                     System.out.println("[2]-Cadastrar livro");
                     System.out.println("[3]-Multas");
+                    System.out.println("[4]-Realizar Empréstimo");
+                    System.out.println("[5]-Cadastrar Usuário");
                     break;
 
                 default:
@@ -91,10 +94,10 @@ public class MenusView {
         }while (opc!=0);
     }
 
-    public String[] MenuCriarUsuario(){
-        int opc =-1;
+    public String[] MenuCriarUsuario() {
+        int opc = -1;
 
-        do{
+        do {
             System.out.println("=======================");
             System.out.println("[1]: Nome");
             System.out.println("[2]: Email");
@@ -108,18 +111,26 @@ public class MenusView {
             String email = sc.nextLine();
             System.out.print("[Senha]:");
             String senha = sc.nextLine();
-            System.out.print("Deseja salvar o usuario: "+nome+" (s/n): ");
-            opc = sc.nextLine().toLowerCase() == "s"? -1:0;
+            System.out.print("Deseja salvar o usuario: " + nome + " (s/n): ");
+            String confirmacao = sc.nextLine().toLowerCase();
 
-            if(opc == -1){
+            if (confirmacao.equals("s")) {
                 String[] usuarioNaoValidado = {nome, email, senha};
                 return usuarioNaoValidado;
             }
+                else{
+                    System.out.println("Cadastro cancelado. Tentar novamente? (s/n)");
+                    confirmacao = sc.nextLine().toLowerCase();
 
-            //Validar se o usuário ja existe no banco;
-            //Validar os dados e tratar
-        }while (opc!=0);
-    }
-
+                    if (confirmacao.equals("n")) {
+                        opc = 0; // Sair do loop
+                    }
+                    // Se for "s" ou qualquer outra coisa, o loop continua
+                }
+                //Validar se o usuário ja existe no banco;
+                //Validar os dados e tratar
+            } while (opc != 0) ;
+            return null;
+        }
 
 }
