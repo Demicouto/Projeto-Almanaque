@@ -4,11 +4,16 @@ import org.almanaque.model.Usuario;
 import org.almanaque.model.enums.TipoUsuario;
 import org.w3c.dom.ls.LSOutput;
 
+import java.time.LocalDate;
+import java.util.InputMismatchException;
+
 import java.util.Scanner;
 
 public class MenusView {
     private Usuario usuarioLogado;
     private Scanner sc;
+    private static final int ANO_MINIMO = 1000;
+
 
     public MenusView(){
         this.sc = new Scanner(System.in);
@@ -17,6 +22,67 @@ public class MenusView {
     public MenusView(Usuario usuarioLogado){
         this.sc = new Scanner(System.in);
         this.usuarioLogado  = usuarioLogado;
+    }
+
+    public void setUsuarioLogado(Usuario usuarioLogado) {
+        this.usuarioLogado = usuarioLogado;
+    }
+
+    private int lerInteiro() {
+        while (true) {
+            try {
+                int opc = sc.nextInt();
+                sc.nextLine();
+                return opc;
+            } catch (InputMismatchException e) {
+                System.out.println("Erro: Por favor, digite apenas números.");
+                System.out.print("Tente novamente: ");
+                sc.nextLine();
+            }
+        }
+    }
+
+    private int lerAnoValido() {
+        int anoAtual = LocalDate.now().getYear(); // Pega o ano atual (ex: 2025)
+
+        while (true) {
+            int ano = lerInteiro();
+
+            if (ano >= ANO_MINIMO && ano <= anoAtual) {
+                return ano;
+            } else {
+                System.out.println("Erro: O ano deve ser válido (entre " + ANO_MINIMO + " e " + anoAtual + ").");
+                System.out.print("Tente novamente: ");
+            }
+        }
+    }
+
+    private String lerIsbnValido() {
+        while (true) {
+            String isbn = sc.nextLine();
+
+            String isbnTratado = isbn.trim();
+
+            if (isbnTratado.length() == 13) {
+                return isbnTratado;
+            } else{
+                System.out.println("Erro: O ISBN deve conter exatamente 13 caracteres.");
+                System.out.print("Tente novamente: ");
+            }
+        }
+    }
+
+    public int menuBoasVindas() {
+        System.out.println("======================");
+        System.out.println("  BEM-VINDO AO ALMANAQUE ");
+        System.out.println("======================");
+        System.out.println("[1] - Fazer Login");
+        System.out.println("[2] - Criar Conta");
+        System.out.println("[0] - Sair do Sistema"); // Esta é a saída REAL
+        System.out.println("======================");
+        System.out.print("Escolha uma opção: ");
+
+        return lerInteiro();
     }
 
     public int MenuPrincipal(){
@@ -48,8 +114,8 @@ public class MenusView {
 
             System.out.println("[0]-Sair");
             System.out.print("Escolha uma opção:");
-            opc = sc.nextInt();
-            sc.nextLine();//Limpar o scanner
+            opc = lerInteiro();
+
             return opc;
         }while(opc !=0);
     }
@@ -68,7 +134,6 @@ public class MenusView {
             System.out.print("[Senha]:");
             String senha = sc.nextLine();
 
-            //tratar os dados
 
             String[] usuarioNaoValidado = {email, senha};
             return usuarioNaoValidado;
@@ -115,30 +180,35 @@ public class MenusView {
     public String[] menuCadastroLivro(){
         int opc = -1;
 
+        System.out.println("=======================");
+        System.out.println("[1]: Titulo");
+        System.out.println("[2]: Autor");
+        System.out.println("[3]: ano");
+        System.out.println("[4]: quantidade");
+        System.out.println("==============" +
+                "=========");
+        System.out.println();
         do{
-            System.out.println("=======================");
-            System.out.println("[1]: Titulo");
-            System.out.println("[2]: Autor");
-            System.out.println("[3]: ano");
-            System.out.println("[4]: quantidade");
-            System.out.println("=======================");
-            System.out.println();
+
 
             System.out.print("[Titulo]:");
-            String titulo = sc.nextLine(); //ISBN do livro
+            String titulo = sc.nextLine();
             System.out.print("[ISBN]:");
-            String isbn = sc.nextLine();
+            String isbn = lerIsbnValido();
             System.out.print("[Autor]:");
             String autor = sc.nextLine();
             System.out.print("[Ano]:");
-            String ano = sc.nextLine();
+            int opcAno = lerAnoValido();
             System.out.print("[Quantidade]:");
-            String qntd = sc.nextLine();
+            int opcQntd = lerInteiro();
 
             System.out.print("Deseja salvar o livro: " + titulo + " (s/n): ");
             String confirmacao = sc.nextLine().toLowerCase();
 
             if (confirmacao.equals("s")) {
+                String ano = "" + opcAno;
+                String qntd = "" + opcQntd;
+
                 String[] livroNaoValidado = {titulo, autor, ano, qntd, isbn};
                 return livroNaoValidado;
             }
@@ -155,7 +225,7 @@ public class MenusView {
     }
 
     public String[] menuPesquisaLivros(){
-        int opc =-1;
+        int opc = -1;
         do{
             System.out.println("=======================");
             System.out.println("[1]: Titulo");
@@ -165,10 +235,10 @@ public class MenusView {
             System.out.println();
             System.out.println("[0]-Sair");
             System.out.print("Pesquisar por qual parâmetro: ");
-            String opc2 = sc.nextLine();
+            int opc2 = lerInteiro();
 
             String query = "";
-            switch (Integer.parseInt(opc2)){
+            switch (opc2){
                 case 1:
                     System.out.print("Digite o titulo: ");
                     query = sc.nextLine();
@@ -186,7 +256,7 @@ public class MenusView {
                 default:
                     System.out.println("Opção inválida!");
             }
-            String[] resultado = {opc2, query};
+            String[] resultado = {"" + opc2, query};
             return resultado;
         }while (opc!=0);
     }
