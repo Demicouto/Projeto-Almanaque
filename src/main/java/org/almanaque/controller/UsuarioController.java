@@ -23,6 +23,7 @@ public class UsuarioController {
 
     public Usuario cadastrarUsuario() {
         String slq = "INSERT INTO usuarios (nome, email, senha, tipo) VALUES (?,?,?,?)";
+
         try {
             Connection conn = DataBaseConnection.getConnection();
             PreparedStatement stmt = conn.prepareStatement(slq);
@@ -48,7 +49,6 @@ public class UsuarioController {
             stmt.executeUpdate();
             System.out.println("Usuário criado com sucesso!");
 
-            System.out.println(email + "\n" + nome + "\n" + senha + "\n");
             if (!validarEmail(email)) {
                 System.out.println("Email inválido! O email deve conter '@'.");
                 return null;

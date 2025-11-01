@@ -18,7 +18,7 @@ public class MenusView {
         this.usuarioLogado  = usuarioLogado;
     }
 
-    public void MenuPrincipal(){
+    public int MenuPrincipal(){
         int opc = -1;
 
         do {
@@ -37,7 +37,6 @@ public class MenusView {
                     System.out.println("[2]-Cadastrar livro");
                     System.out.println("[3]-Multas");
                     System.out.println("[4]-Realizar Empréstimo");
-                    System.out.println("[5]-Cadastrar Usuário");
                     break;
 
                 default:
@@ -50,29 +49,7 @@ public class MenusView {
             System.out.print("Escolha uma opção:");
             opc = sc.nextInt();
             sc.nextLine();//Limpar o scanner
-
-            switch (opc){
-                case 1:
-                    if(usuarioLogado.getTipo() == TipoUsuario.LEITOR){
-                        //Mostrar livros recomendados
-                    }else {
-                        //Mostrar todos os livros
-                    }
-                    break;
-                case 2:
-                    if(usuarioLogado.getTipo() == TipoUsuario.LEITOR){
-                        //Pesquisar livros
-                    }else {
-                        //Cadastrar livros
-                    }
-                    break;
-                case 3:
-                    //Multas Atraso
-                    break;
-                default:
-                    System.out.println("Opção inválida!");
-            }
-
+            return opc;
         }while(opc !=0);
     }
 
