@@ -2,6 +2,7 @@ package org.almanaque.view;
 
 import org.almanaque.model.Usuario;
 import org.almanaque.model.enums.TipoUsuario;
+import org.w3c.dom.ls.LSOutput;
 
 import java.util.Scanner;
 
@@ -104,14 +105,89 @@ public class MenusView {
                     confirmacao = sc.nextLine().toLowerCase();
 
                     if (confirmacao.equals("n")) {
-                        opc = 0; // Sair do loop
+                        opc = 0;
                     }
-                    // Se for "s" ou qualquer outra coisa, o loop continua
                 }
-                //Validar se o usuário ja existe no banco;
-                //Validar os dados e tratar
             } while (opc != 0) ;
             return null;
         }
 
+    public String[] menuCadastroLivro(){
+        int opc = -1;
+
+        do{
+            System.out.println("=======================");
+            System.out.println("[1]: Titulo");
+            System.out.println("[2]: Autor");
+            System.out.println("[3]: ano");
+            System.out.println("[4]: quantidade");
+            System.out.println("=======================");
+            System.out.println();
+
+            System.out.print("[Titulo]:");
+            String titulo = sc.nextLine(); //ISBN do livro
+            System.out.print("[ISBN]:");
+            String isbn = sc.nextLine();
+            System.out.print("[Autor]:");
+            String autor = sc.nextLine();
+            System.out.print("[Ano]:");
+            String ano = sc.nextLine();
+            System.out.print("[Quantidade]:");
+            String qntd = sc.nextLine();
+
+            System.out.print("Deseja salvar o livro: " + titulo + " (s/n): ");
+            String confirmacao = sc.nextLine().toLowerCase();
+
+            if (confirmacao.equals("s")) {
+                String[] livroNaoValidado = {titulo, autor, ano, qntd, isbn};
+                return livroNaoValidado;
+            }
+            else{
+                System.out.println("Cadastro cancelado. Tentar novamente? (s/n)");
+                confirmacao = sc.nextLine().toLowerCase();
+
+                if (confirmacao.equals("n")) {
+                    opc = 0;
+                }
+            }
+        }while(opc!=0);
+        return null;
+    }
+
+    public String[] menuPesquisaLivros(){
+        int opc =-1;
+        do{
+            System.out.println("=======================");
+            System.out.println("[1]: Titulo");
+            System.out.println("[2]: Autor");
+            System.out.println("[3]: Ano");
+            System.out.println("=======================");
+            System.out.println();
+            System.out.println("[0]-Sair");
+            System.out.print("Pesquisar por qual parâmetro: ");
+            String opc2 = sc.nextLine();
+
+            String query = "";
+            switch (Integer.parseInt(opc2)){
+                case 1:
+                    System.out.print("Digite o titulo: ");
+                    query = sc.nextLine();
+                    break;
+                case 2:
+                    System.out.print("Digite o autor: ");
+                    query = sc.nextLine();
+                    break;
+                case 3:
+                    System.out.print("Digite o ano: ");
+                    query = sc.nextLine();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+            }
+            String[] resultado = {opc2, query};
+            return resultado;
+        }while (opc!=0);
+    }
 }
