@@ -6,7 +6,7 @@ public class Emprestimo {
 
     private int id;
     private int usuarioId;
-    private i nt livroIsbn;
+    private int livroIsbn;
     private LocalDateTime dataEmprestimo;
     private LocalDateTime dataDevolucao;
     private StatusEmprestimo status;

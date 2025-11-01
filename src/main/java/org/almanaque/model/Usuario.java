@@ -12,9 +12,10 @@ public class Usuario {
     public Usuario(int i, String rony, String mail, TipoUsuario admin, String number) {
     }
 
-    public Usuario(String email, String nome, TipoUsuario tipo) {
+    public Usuario(String email, String nome,String senha, TipoUsuario tipo) {
         this.email = email;
         this.nome = nome;
+        this.senha = senha;
         this.tipo = tipo;
     }
 

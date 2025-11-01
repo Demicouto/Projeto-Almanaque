@@ -9,6 +9,10 @@ public class MenusView {
     private Usuario usuarioLogado;
     private Scanner sc;
 
+    public MenusView(){
+        this.sc = new Scanner(System.in);
+    }
+
     public MenusView(Usuario usuarioLogado){
         this.sc = new Scanner(System.in);
         this.usuarioLogado  = usuarioLogado;
