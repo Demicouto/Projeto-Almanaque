@@ -104,6 +104,7 @@ public class MenusView {
                     System.out.println("[2]-Cadastrar livro");
                     System.out.println("[3]-Multas");
                     System.out.println("[4]-Realizar Empréstimo");
+                    System.out.println("[5]-pesquisar livro");
                     break;
 
                 default:

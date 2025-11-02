@@ -74,6 +74,15 @@ public class Main {
                                 livroController.solicitacoesEmprestimo();
                                 System.out.println("=====================");
                                 break;
+                            case 5:
+                                System.out.println("=Pesquisar Livros=");
+                                livroController.pesquisarLivro();
+                                System.out.println("==================");
+                                break;
+                            case 6:
+                                System.out.println("=Pesquisar Livros=");
+                                livroController.pesquisarLivro();
+                                System.out.println("==================");
                             case 0:
                                 System.out.println("Logout...");
                                 break;
