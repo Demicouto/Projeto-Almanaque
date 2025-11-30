@@ -16,15 +16,22 @@ public class DatabaseSetup {
             );
             """;
 
+        String sqlCategoria = """
+            CREATE TABLE IF NOT EXISTS categorias(
+                id SERIAL PRIMARY KEY,
+                nome VARCHAR(100) UNIQUE NOT NULL
+            );
+            """;
+
         String sqlLivro = """
             CREATE TABLE IF NOT EXISTS livros (
                 isbn VARCHAR(13) PRIMARY KEY,
                 titulo VARCHAR(255) NOT NULL,
                 autor VARCHAR(255) NOT NULL,
+                categoria_id INT REFERENCES categorias(id),
                 ano INT,
-                quantidadeTotal INT NOT NULL,
-                quantidadeDisponivel INT NOT NULL,
-                categoria VARCHAR(100)
+                qnt_Total INT NOT NULL,
+                qnt_Disponivel INT NOT NULL
             );
             """;
 
@@ -32,9 +39,9 @@ public class DatabaseSetup {
             CREATE TABLE IF NOT EXISTS emprestimos (
                 id SERIAL PRIMARY KEY,
                 usuarioId INT NOT NULL REFERENCES usuarios(id),
-                livro_isbn VARCHAR(13) NOT NULL REFERENCES livros(isbn),
-                dataEmprestimo TIMESTAMP NOT NULL,
-                dataDevolucao TIMESTAMP,
+                livroIsbn VARCHAR(13) NOT NULL REFERENCES livros(isbn),
+                data_Emprestimo TIMESTAMP NOT NULL,
+                data_Devolucao TIMESTAMP,
                 status VARCHAR(50) NOT NULL,
                 multa DECIMAL(10, 2) DEFAULT 0.0
             );
@@ -46,11 +53,16 @@ public class DatabaseSetup {
             stmt.execute(sqlUsuario);
             System.out.println("Tabela 'usuario' criada ou já existe!");
 
+            stmt.execute(sqlCategoria);
+            System.out.println("Tabela 'categorias' criado com sucesso ou ja existente!");
+
             stmt.execute(sqlLivro);
             System.out.println("Tabela 'livro' criado com sucesso ou ja existente!");
 
             stmt.execute(sqlEmprestimo);
             System.out.println("Tabela 'emprestimos' criado com sucesso ou ja existente!");
+
+
 
         } catch (SQLException e) {
             e.printStackTrace();

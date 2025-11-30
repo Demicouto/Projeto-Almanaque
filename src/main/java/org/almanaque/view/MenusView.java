@@ -28,6 +28,7 @@ public class MenusView {
         this.usuarioLogado = usuarioLogado;
     }
 
+
     private int lerInteiro() {
         while (true) {
             try {
@@ -57,33 +58,8 @@ public class MenusView {
         }
     }
 
-    private String lerIsbnValido() {
-        while (true) {
-            String isbn = sc.nextLine();
 
-            String isbnTratado = isbn.trim();
 
-            if (isbnTratado.length() == 13) {
-                return isbnTratado;
-            } else{
-                System.out.println("Erro: O ISBN deve conter exatamente 13 caracteres.");
-                System.out.print("Tente novamente: ");
-            }
-        }
-    }
-
-    public int menuBoasVindas() {
-        System.out.println("======================");
-        System.out.println("  BEM-VINDO AO ALMANAQUE ");
-        System.out.println("======================");
-        System.out.println("[1] - Fazer Login");
-        System.out.println("[2] - Criar Conta");
-        System.out.println("[0] - Sair do Sistema"); // Esta é a saída REAL
-        System.out.println("======================");
-        System.out.print("Escolha uma opção: ");
-
-        return lerInteiro();
-    }
 
     public int MenuPrincipal(){
         int opc = -1;
@@ -93,17 +69,17 @@ public class MenusView {
 
             switch (usuarioLogado.getTipo()){
                 case TipoUsuario.LEITOR:
-                    System.out.println("[1]-Mostrar livros recomendados");
+                    System.out.println("[1]-Mostrar livros recomendados - em desenvolvimento");
                     System.out.println("[2]-Pesquisar Livros");
-                    System.out.println("[3]-Multas/Atraso");
-                    System.out.println("[4]-Devolver Livro");
+                    System.out.println("[3]-Multas/Atraso - em desenvolvimento");
+                    System.out.println("[4]-Devolver Livro - em desenvolvimento");
                     break;
 
                 case TipoUsuario.ADMIN:
                     System.out.println("[1]-Mostrar todos os livros");
                     System.out.println("[2]-Cadastrar livro");
-                    System.out.println("[3]-Multas");
-                    System.out.println("[4]-Realizar Empréstimo");
+                    System.out.println("[3]-Multas - em desenvolvimento");
+                    System.out.println("[4]-Realizar Empréstimo - em desenvolvimento... ");
                     System.out.println("[5]-pesquisar livro");
                     break;
 
@@ -131,15 +107,28 @@ public class MenusView {
             System.out.println("=======================");
 
             System.out.print("[Email]:");
-            String email = sc.nextLine();
+            String email = sc.nextLine().trim();
             System.out.print("[Senha]:");
-            String senha = sc.nextLine();
+            String senha = sc.nextLine().trim();
 
 
             String[] usuarioNaoValidado = {email, senha};
             return usuarioNaoValidado;
 
         }while (opc!=0);
+    }
+
+    public int menuBoasVindas() {
+        System.out.println("======================");
+        System.out.println("  BEM-VINDO AO ALMANAQUE ");
+        System.out.println("======================");
+        System.out.println("[1] - Fazer Login");
+        System.out.println("[2] - Criar Conta");
+        System.out.println("[0] - Sair do Sistema"); // Esta é a saída REAL
+        System.out.println("======================");
+        System.out.print("Escolha uma opção: ");
+
+        return lerInteiro();
     }
 
     public String[] MenuCriarUsuario() {
@@ -195,7 +184,7 @@ public class MenusView {
             System.out.print("[Titulo]:");
             String titulo = sc.nextLine();
             System.out.print("[ISBN]:");
-            String isbn = lerIsbnValido();
+            String isbn = sc.nextLine();
             System.out.print("[Autor]:");
             String autor = sc.nextLine();
             System.out.print("[Ano]:");

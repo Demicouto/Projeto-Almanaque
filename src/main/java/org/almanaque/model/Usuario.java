@@ -9,15 +9,24 @@ public class Usuario {
     private TipoUsuario tipo;
     private String senha;
 
-    public Usuario(int i, String rony, String mail, TipoUsuario admin, String number) {
+
+
+     // Usaremos este construtor para carregar um usuário do banco de dados.
+    public Usuario(int id, String nome, String email, TipoUsuario tipo, String senha) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.tipo = tipo;
+        this.senha = senha;
     }
 
-    public Usuario(String email, String nome,String senha, TipoUsuario tipo) {
+     //construtor para criar o usuario, no banco ele receberá um id
+    public Usuario(String email, String nome, TipoUsuario tipo) {
         this.email = email;
         this.nome = nome;
-        this.senha = senha;
         this.tipo = tipo;
     }
+
 
     public int getId() {
         return id;
@@ -70,4 +79,3 @@ public class Usuario {
                 '}';
     }
 }
-

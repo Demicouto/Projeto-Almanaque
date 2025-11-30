@@ -1,34 +1,139 @@
-@startuml Diagrama de classe
+@startuml
+' Configurações de aparência
+skinparam classAttributeIconSize 0
+hide emptymembers
+hide emptymethods
+
+' Definição das Classes (Model)
+class Usuario {
+  - id: int
+  - nome: String
+  - email: String
+  - tipo: TipoUsuario
+  - senha: String
+  + Usuario(email, nome, senha, tipo)
+  + getTipo(): TipoUsuario
+  + getNome(): String
+  ' ... outros getters/setters
+}
 
 class Livro {
-  - titulo : String
-  - autor : String
-  - resumo : String
-  - qntDisponivel : int
-  + emprestar()
-  + devolver()
-}
-
-class Usuario {
-    - nome : String
-    - idade : int 
-    + meusLivros()
-    + devolverLivro(livro: Livro)
-}
-
-class Bibliotecario {
-    + solicitacoesEmprestimo();
-    + emprestar(livro: Livro)
+  - isbn: String
+  - titulo: String
+  - autor: String
+  - ano: int
+  - quantidadeTotal: int
+  - quantidadeDisponivel: int
+  + Livro(titulo, autor, ano, isbn, qntdTotal)
+  + getTitulo(): String
+  + getAutor(): String
+  + getAno(): int
+  ' ... outros getters/setters
 }
 
 class Emprestimo {
-    - dataEmprestimo
-    - dataDevolucao
-    + calcularAtraso()
+  - id: int
+  - usuarioId: int
+  - livroIsbn: int
+  - dataEmprestimo: LocalDateTime
+  - dataDevolucao: LocalDateTime
+  - status: StatusEmprestimo
+  - multa: double
+  + Emprestimo(usuarioId, livroIsbn)
+  ' ... getters/setters
 }
 
-Usuario "1" --|> "0..*" Emprestimo : realiza > 
-Emprestimo "1" --|> "1" Livro : refere-se >
-Bibliotecario "1" --|> "0..*" Livro : Gerencia >
+enum TipoUsuario {
+  LEITOR
+  ADMIN
+}
+
+enum StatusEmprestimo {
+  EMPRESTADO
+  DEVOLVIDO
+}
+
+' Definição das Classes (Controller)
+class UsuarioController {
+  - menus: MenusView
+  + UsuarioController()
+  - validarEmail(email): boolean
+  + cadastrarUsuario(): Usuario
+  + loginUsuario(): void
+  + validarUsuarioLogado(): Usuario
+}
+
+class LivroController {
+  - menus: MenusView
+  - livros: ArrayList<Livro>
+  + LivroController()
+  + cadastrarLivros(): void
+  + pegarLivrosCadastrados(): void
+  + todasMultas(): void
+  + solicitacoesEmprestimo(): void
+  + mostrarRecomendados(): void
+  + pesquisarLivro(): void
+}
+
+class EmprestimoController {
+  ' Classe Vazia
+}
+
+' Definição das Classes (View)
+class MenusView {
+  - usuarioLogado: Usuario
+  - sc: Scanner
+  + MenusView()
+  + setUsuarioLogado(usuarioLogado): void
+  - lerInteiro(): int
+  - lerAnoValido(): int
+  - lerIsbnValido(): String
+  + menuBoasVindas(): int
+  + MenuPrincipal(): int
+  + MenuLogin(): String[]
+  + MenuCriarUsuario(): String[]
+  + menuCadastroLivro(): String[]
+  + menuPesquisaLivros(): String[]
+}
+
+' Definição das Classes (Util)
+class DataBaseConnection {
+  - {static} URL: String
+  - {static} USER: String
+  - {static} PASSWORD: String
+  + {static} getConnection(): Connection
+}
+
+class DatabaseSetup {
+  + {static} criarTabelas(): void
+}
+
+' Definição da Classe Principal (Main)
+class Main {
+  + {static} main(String[] args)
+}
+
+' Relacionamentos
+Main ..> UsuarioController : "usa"
+Main ..> LivroController : "usa"
+Main ..> MenusView : "usa"
+Main ..> Usuario : "gerencia (usuarioLogado)"
+
+UsuarioController ..> MenusView : "usa (menus)"
+UsuarioController ..> Usuario : "cria/valida"
+UsuarioController ..> TipoUsuario : "usa"
+' A implementação atual usa I/O de arquivo, não o DataBaseConnection
+UsuarioController ..> "java.io.BufferedWriter" : "usa (para log)"
+UsuarioController ..> "java.io.BufferedReader" : "usa (para log)"
+
+LivroController ..> MenusView : "usa (menus)"
+LivroController "1" *-- "0..*" Livro : "contém (em ArrayList)"
+
+MenusView ..> Usuario : "usa (usuarioLogado)"
+
+DatabaseSetup ..> DataBaseConnection : "usa"
+
+Usuario -- TipoUsuario
+Emprestimo -- StatusEmprestimo
 
 @enduml
