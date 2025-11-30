@@ -1,62 +1,74 @@
-@startuml
-skinparam actorStyle awesome
+@startuml AlmanaqueUseCaseDiagram
+title Diagrama de Caso de Uso - Sistema Almanaque
+
+' Configura o layout para a direção da esquerda para a direita, típica para Use Case
 left to right direction
 
+' ===================================================================
+' Atores
+' ===================================================================
+actor Leitor as Leitor <<TipoUsuario.LEITOR>>
+actor Admin as Admin <<TipoUsuario.ADMIN>>
 
+' Relação de Generalização: Um Admin é também um Leitor
+Admin --|> Leitor
 
-actor "Leitor"
-actor "Admin"
+' ===================================================================
+' Limite do Sistema
+' ===================================================================
+rectangle "Sistema Almanaque (Gestão de Biblioteca)" {
 
+  ' =================================================================
+  ' Casos de Uso
+  ' =================================================================
 
-rectangle "Sistema Almanaque" {
+  package "Gestão de Acesso" {
+    (Acessar Sistema / Login) as UC_LOGIN
+    (Cadastrar Usuário) as UC_CAD_USER
+  }
 
+  package "Catálogo de Livros" {
+    (Pesquisar Livro) as UC_PESQ_LIVRO
+    (Listar Todos os Livros) as UC_LIST_LIVRO
+    (Cadastrar Novo Livro) as UC_CAD_LIVRO
+    (Gerenciar Categorias) as UC_GER_CAT
+  }
 
-  package "Autenticação" {
-    usecase "Criar Conta" as UC_Create
-    usecase "Fazer Login" as UC_Login
-    usecase "Sair do Sistema" as UC_Exit
+  package "Gestão de Empréstimos" {
+    ' Implementação no EmprestimoController
+    (Realizar Empréstimo) as UC_EMPRESTAR
+    (Realizar Devolução) as UC_DEVOLVER
+    (Calcular Multa) as UC_MULTA
   }
 
 
-  package "Funções Comuns" {
-    usecase "Pesquisar Livros" as UC_Search
-    usecase "Fazer Logout" as UC_Logout
-  }
+  ' =================================================================
+  ' Relações dos Casos de Uso
+  ' =================================================================
 
+  ' Relacionamento de Inclusão: Devolução *sempre* inclui a verificação da multa
+  UC_DEVOLVER ..> UC_MULTA : <<include>>
 
-  package "Funções do Leitor" {
-    usecase "Mostrar Livros Recomendados" as UC_Recomend <<stub>>
-    usecase "Consultar Multas" as UC_LeitorMulta <<stub>>
-    usecase "Devolver Livro" as UC_Devolve <<stub>>
-  }
+  ' Relacionamento de Inclusão: O cadastro de livro pode incluir o gerenciamento de categoria
+  UC_CAD_LIVRO ..> UC_GER_CAT : <<include>>
 
-
-  package "Funções do Admin" {
-    usecase "Mostrar Todos os Livros" as UC_ListAll
-    usecase "Cadastrar Livro" as UC_AddLivro
-    usecase "Consultar Multas (Admin)" as UC_AdminMulta <<stub>>
-    usecase "Realizar Empréstimo" as UC_Emprestimo <<stub>>
-  }
 }
 
+' ===================================================================
+' Relações dos Atores
+' ===================================================================
 
-Guest -- UC_Create
-Guest -- UC_Login
-Guest -- UC_Exit
+' Acesso
+Leitor -- UC_LOGIN
+Leitor -- UC_CAD_USER
 
+' Catálogo (Funcionalidades de Leitor herdadas pelo Admin)
+Leitor -- UC_PESQ_LIVRO
+Leitor -- UC_LIST_LIVRO
 
-User -- UC_Search
-User -- UC_Logout
-
-
-Leitor -- UC_Recomend
-Leitor -- UC_LeitorMulta
-Leitor -- UC_Devolve
-
-
-Admin -- UC_ListAll
-Admin -- UC_AddLivro
-Admin -- UC_AdminMulta
-Admin -- UC_Emprestimo
+' Funções de Admin
+Admin -- UC_CAD_LIVRO
+Admin -- UC_EMPRESTAR
+Admin -- UC_DEVOLVER
 
 @enduml
