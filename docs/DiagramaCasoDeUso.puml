@@ -1,33 +1,74 @@
-@startuml Diagrama de caso de uso
+@startuml AlmanaqueUseCaseDiagram
+title Diagrama de Caso de Uso - Sistema Almanaque
 
-actor "Usuario/Leitor" as U
-actor "Bibliotecário" as B
+' Configura o layout para a direção da esquerda para a direita, típica para Use Case
+left to right direction
 
-rectangle "Sistema da biblioteca" {
-    usecase (Pesquisar livro) as UC_PESQUISAR_LIVRO
-    usecase (Cadastrar usuario) as UC_CADASTRAR_USUARIO
-    usecase (Devolver livro) as UC_DEVOLVER_LIVRO
+' ===================================================================
+' Atores
+' ===================================================================
+actor Leitor as Leitor <<TipoUsuario.LEITOR>>
+actor Admin as Admin <<TipoUsuario.ADMIN>>
 
-    usecase (Emprestar livro) as UC_EMPRESTAR_LIVRO
-    usecase (Cadastrar livro) as UC_CADASTRAR_LIVRO
+' Relação de Generalização: Um Admin é também um Leitor
+Admin --|> Leitor
 
-    usecase (Persistir dados no banco) as UC_GUARDAR_NO_BANCO
-    usecase (Sistema de multa) as US_MULTAR_ATRASO
+' ===================================================================
+' Limite do Sistema
+' ===================================================================
+rectangle "Sistema Almanaque (Gestão de Biblioteca)" {
 
-    UC_CADASTRAR_USUARIO ..> UC_GUARDAR_NO_BANCO : <<include>>
-    UC_DEVOLVER_LIVRO ..> UC_GUARDAR_NO_BANCO : <<include>>
-    UC_EMPRESTAR_LIVRO ..> UC_GUARDAR_NO_BANCO : <<include>>
-    UC_CADASTRAR_LIVRO ..> UC_GUARDAR_NO_BANCO : <<include>>
+  ' =================================================================
+  ' Casos de Uso
+  ' =================================================================
 
-    UC_DEVOLVER_LIVRO ..> US_MULTAR_ATRASO : <<include>>
+  package "Gestão de Acesso" {
+    (Acessar Sistema / Login) as UC_LOGIN
+    (Cadastrar Usuário) as UC_CAD_USER
+  }
+
+  package "Catálogo de Livros" {
+    (Pesquisar Livro) as UC_PESQ_LIVRO
+    (Listar Todos os Livros) as UC_LIST_LIVRO
+    (Cadastrar Novo Livro) as UC_CAD_LIVRO
+    (Gerenciar Categorias) as UC_GER_CAT
+  }
+
+  package "Gestão de Empréstimos" {
+    ' Implementação no EmprestimoController
+    (Realizar Empréstimo) as UC_EMPRESTAR
+    (Realizar Devolução) as UC_DEVOLVER
+    (Calcular Multa) as UC_MULTA
+  }
+
+
+  ' =================================================================
+  ' Relações dos Casos de Uso
+  ' =================================================================
+
+  ' Relacionamento de Inclusão: Devolução *sempre* inclui a verificação da multa
+  UC_DEVOLVER ..> UC_MULTA : <<include>>
+
+  ' Relacionamento de Inclusão: O cadastro de livro pode incluir o gerenciamento de categoria
+  UC_CAD_LIVRO ..> UC_GER_CAT : <<include>>
 
 }
 
-U -- UC_CADASTRAR_USUARIO
-U -- UC_PESQUISAR_LIVRO
-U -- UC_DEVOLVER_LIVRO
+' ===================================================================
+' Relações dos Atores
+' ===================================================================
 
-B -- UC_EMPRESTAR_LIVRO
-B -- UC_CADASTRAR_LIVRO
+' Acesso
+Leitor -- UC_LOGIN
+Leitor -- UC_CAD_USER
+
+' Catálogo (Funcionalidades de Leitor herdadas pelo Admin)
+Leitor -- UC_PESQ_LIVRO
+Leitor -- UC_LIST_LIVRO
+
+' Funções de Admin
+Admin -- UC_CAD_LIVRO
+Admin -- UC_EMPRESTAR
+Admin -- UC_DEVOLVER
 
 @enduml

@@ -5,19 +5,19 @@ import java.time.LocalDateTime;
 public class Emprestimo {
 
     private int id;
-    private int usuarioId; // Chave estrangeira para a tabela de usuários
-    private int livroId;   // Chave estrangeira para a tabela de livros
+    private int usuarioId;
+    private int livroIsbn;
     private LocalDateTime dataEmprestimo;
-    private LocalDateTime dataDevolucao; // Será nulo enquanto o empréstimo estiver ativo
+    private LocalDateTime dataDevolucao;
     private StatusEmprestimo status;
     private double multa;
 
     public Emprestimo() {
     }
 
-    public Emprestimo(int usuarioId, int livroId) {
+    public Emprestimo(int usuarioId, int livroIsbn) {
         this.usuarioId = usuarioId;
-        this.livroId = livroId;
+        this.livroIsbn = livroIsbn;
         this.dataEmprestimo = LocalDateTime.now();
         this.status = StatusEmprestimo.EMPRESTADO;
         this.multa = 0.0;
@@ -40,12 +40,12 @@ public class Emprestimo {
         this.usuarioId = usuarioId;
     }
 
-    public int getLivroId() {
-        return livroId;
+    public int getLivroIsbn() {
+        return livroIsbn;
     }
 
-    public void setLivroId(int livroId) {
-        this.livroId = livroId;
+    public void setLivroIsbn(int livroIsbn) {
+        this.livroIsbn = this.livroIsbn;
     }
 
     public LocalDateTime getDataEmprestimo() {
@@ -82,6 +82,6 @@ public class Emprestimo {
 
     @Override
     public String toString() {
-        return "Empréstimo ID: " + id + " | Livro ID: " + livroId + " | Usuário ID: " + usuarioId + " | Status: " + status;
+        return "Empréstimo ID: " + id + " | Isbn: " + livroIsbn + " | Usuário ID: " + usuarioId + " | Status: " + status;
     }
 }

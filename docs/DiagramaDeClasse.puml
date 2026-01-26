@@ -1,34 +1,145 @@
-@startuml Diagrama de classe
+@startuml AlmanaqueClassDiagram
 
-class Livro {
-  - titulo : String
-  - autor : String
-  - resumo : String
-  - qntDisponivel : int
-  + emprestar()
-  + devolver()
+title Diagrama de Classes do Sistema Almanaque
+
+skinparam ClassAttributeIconSize 0
+
+' ===================================================================
+' Model Classes (Entidades)
+' ===================================================================
+
+package "org.almanaque.model" {
+    enum TipoUsuario {
+        LEITOR
+        ADMIN
+    }
+
+    enum StatusEmprestimo {
+        EMPRESTADO
+        DEVOLVIDO
+        ATRASADO
+    }
+
+    class Usuario {
+        - id: int
+        - nome: String
+        - email: String
+        - tipo: TipoUsuario
+        - senha: String
+        + Usuario(email, nome, tipo)
+        + Usuario(id, nome, email, tipo, senha)
+        + getTipo(): TipoUsuario
+    }
+
+    class Categoria {
+        - id: int
+        - nome: String
+        + Categoria(nome)
+        + Categoria(id, nome)
+        + getNome(): String
+    }
+
+    class Livro {
+        - isbn: String
+        - titulo: String
+        - autor: String
+        - ano: int
+        - quantidadeTotal: int
+        - quantidadeDisponivel: int
+        - categoria: Categoria
+        + Livro(titulo, autor, ano, isbn, quantidadeTotal, categoria)
+        + getIsbn(): String
+        + getQuantidadeDisponivel(): int
+    }
+
+    class Emprestimo {
+        - id: int
+        - usuarioId: int
+        - livroIsbn: String
+        - dataEmprestimo: LocalDateTime
+        - dataDevolucao: LocalDateTime
+        - status: StatusEmprestimo
+        - multa: double
+        + Emprestimo(usuarioId, livroIsbn)
+        + getId(): int
+    }
+
+    ' Relacionamentos dos Models
+    Usuario "1" -- "*" Emprestimo : empresta
+    Livro "1" -- "*" Emprestimo : referente_a
+    Categoria "1" -- "*" Livro : possui
+
+    Usuario "1" -- "1" TipoUsuario : tem
+    Emprestimo "1" -- "1" StatusEmprestimo : tem
 }
 
-class Usuario {
-    - nome : String
-    - idade : int 
-    + meusLivros()
-    + devolverLivro(livro: Livro)
+' ===================================================================
+' Controller Classes (Lógica de Negócio)
+' ===================================================================
+
+package "org.almanaque.controller" {
+    class UsuarioController {
+        - menus: MenusView
+        + cadastrarUsuario(): void
+        + loginUsuario(): Usuario
+        - validarEmail(email): boolean
+        - salvarUsuario(usuario): void
+    }
+
+    class LivroController {
+        - menus: MenusView
+        + cadastrarLivros(): void
+        + listarLivros(): void
+        + pesquisarLivro(): void
+        - exibirLivro(rs): void
+    }
+
+    class EmprestimoController {
+        ' Métodos a serem adicionados:
+        ' + realizarEmprestimo(): void
+        ' + realizarDevolucao(): void
+    }
 }
 
-class Bibliotecario {
-    + solicitacoesEmprestimo();
-    + emprestar(livro: Livro)
+' ===================================================================
+' Utility Classes (Infraestrutura)
+' ===================================================================
+
+package "org.almanaque.util" {
+    class DataBaseConnection {
+        - {static} URL: String
+        - {static} USER: String
+        - {static} PASSWORD: String
+        + {static} getConnection(): Connection
+    }
+
+    class DatabaseSetup {
+        + {static} criarTabelas(): void
+    }
 }
 
-class Emprestimo {
-    - dataEmprestimo
-    - dataDevolucao
-    + calcularAtraso()
-}
+' ===================================================================
+' Relações de Dependência
+' ===================================================================
 
-Usuario "1" --|> "0..*" Emprestimo : realiza > 
-Emprestimo "1" --|> "1" Livro : refere-se >
-Bibliotecario "1" --|> "0..*" Livro : Gerencia >
+' Controladores dependem das Entidades
+UsuarioController ..> Usuario
+LivroController ..> Livro
+EmprestimoController ..> Emprestimo
+EmprestimoController ..> Usuario
+EmprestimoController ..> Livro
+
+' Controladores e Setup dependem da Conexão
+UsuarioController ..> DataBaseConnection
+LivroController ..> DataBaseConnection
+EmprestimoController ..> DataBaseConnection
+DatabaseSetup ..> DataBaseConnection
+
+' Dependência de Views (assumindo a classe MenusView existe fora dos arquivos fornecidos, mas é usada)
+' A MenusView é implicitamente uma dependência via composição (campo privado)
+class MenusView << (V,yellow) View >>
+
+UsuarioController -- MenusView
+LivroController -- MenusView
 
 @enduml
